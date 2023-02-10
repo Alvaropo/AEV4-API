@@ -1,0 +1,97 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="index1.css">
+  <title>WeatherAPI</title>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script type="text/javascript">
+
+    function getWeatherInfo() {//metodo que recibe la informacion de la API (weatherstack.com/documentation)
+      var ciudad = document.getElementById('ciudad').value;
+
+      //a esta key le quedan muy pocas request, en caso de falla usa esta:http://api.weatherstack.com/current?access_key=00bc11ee2d68f4bc8a1d8e5442223686&query=
+      //si no te funciona procura forzar la busqueda por http
+      axios.get("http://api.weatherstack.com/current?access_key=b4480ee2d684d39ca89f18affdc6ceef&query=" + ciudad)
+        .then(response => {
+          document.getElementById('horaLocal').value = response.data.location.localtime;
+          document.getElementById('temperatura').value = response.data.current.temperature;                                         //pongo los valores obtenidos de la API en sus correspondientes input text
+          document.getElementById('sensacion').value = response.data.current.feelslike;
+          document.getElementById('velocidadViento').value = response.data.current.wind_speed + response.data.current.wind_dir;
+          document.getElementById('precipitacion').value = response.data.current.precip;
+          document.getElementById('humedad').value = response.data.current.humidity;
+          document.getElementById('weatherIcon').src = response.data.current.weather_icons;
+        })
+        .catch(error => {
+          console.error(error);
+          alert("ERROR, fallo al conectar con la API");
+        });
+    }
+
+  </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script type="text/javascript">
+    function guardarInfo() {//metodo para pasar los valores obtenidos de la API a un documento ficheroPHP.php
+      var ciudad = document.getElementById('ciudad').value;
+      var horaLocal = document.getElementById('horaLocal').value;
+      var temperatura = document.getElementById('temperatura').value;                   //le doy valor a las variables
+      var sensacion = document.getElementById('sensacion').value;
+      var velocidadViento = document.getElementById('velocidadViento').value;
+      var precipitacion = document.getElementById('precipitacion').value;
+      var humedad = document.getElementById('humedad').value;
+
+      $.ajax({                                                                          //las paso al fichero
+        type: "POST", //metodo POST para enviar datos al servidor
+        url: "ficheroPHP.php", // ruta del fichero PHP del servidor
+        data: { ciudad: ciudad, horaLocal: horaLocal, temperatura: temperatura, sensacion: sensacion, velocidadViento: velocidadViento, precipitacion: precipitacion, humedad: humedad },
+        success: function (response) { //resultado del PHP del servidor
+          alert("DATOS GUARDAROS CORRECTAMENTE");
+        },
+        error: function () {
+          alert("ERROR, datos no enviados correctamente");
+        }
+      });
+      document.getElementById('ciudad').value = "";
+      document.getElementById('horaLocal').value = "";
+      document.getElementById('temperatura').value = "";
+      document.getElementById('sensacion').value = "";                                //cuando envia los datos, limpio los campos de texto cuando se presiona el boton "Guardar"
+      document.getElementById('velocidadViento').value = "";
+      document.getElementById('precipitacion').value = "";
+      document.getElementById('humedad').value = "";
+      document.getElementById('weatherIcon').src = "";
+    }
+  </script>
+</head>
+
+<body>
+  <p id="icono">
+    <img src="https://weatherextension.com/img/Weather%20Extension%20Logo.png" width="20%" height="20%" />
+  </p>
+  <form id="form1" name="form1" method="post" action="">
+    <p id="formulario">
+      <label for="ciudad">Ciudad</label>
+      <input type="text" class="txt" name="ciudad" id="ciudad" />
+      <input type="button" name="guardar" id="guardar" onclick="getWeatherInfo()" value="Buscar" />
+      <input type="button" name="buscar" id="buscar" onclick="guardarInfo()" value="Guardar" />
+    </p>
+  </form>
+  <div class="contenedor">
+    <div class="info">
+      <p class="datos">Hora Local:<input class="txt" type="text" style="width : 110px" id="horaLocal" readonly></p>
+      <p class="datos">Temperatura:<input class="txt" type="text" style="width : 20px" id="temperatura" readonly>°C</p>
+      <p class="datos">Sensacion Termica:<input class="txt" type="text" style="width : 20px" id="sensacion" readonly>°C
+      </p>
+      <p class="datos">Velodidad viento y direccion:<input class="txt" type="text" style="width : 45px"
+          id="velocidadViento" readonly>km/h</p>
+      <p class="datos">Precipitacion:<input class="txt" type="text" style="width : 20px" id="precipitacion" readonly>mm
+      </p>
+      <p class="datos">Humedad:<input class="txt" type="text" style="width : 20px" id="humedad" readonly>%</p>
+    </div>
+    <div id="imagen">
+      <img id="weatherIcon" height="220" width="220">
+    </div>
+  </div>
+
+</html>

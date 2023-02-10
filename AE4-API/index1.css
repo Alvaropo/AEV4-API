@@ -1,0 +1,70 @@
+body {
+  font-family: Arial;
+  background-color: rgb(173, 216, 226);
+  font-family: Monospace;
+}
+
+#icono {
+  background-color: rgb(173, 216, 226);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input {
+  margin: 10px;
+}
+
+label {
+  color: rgb(255, 255, 255);
+  -webkit-text-stroke: 1px black;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+#formulario {
+  background-color: rgb(173, 216, 226);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.datos {
+  margin: 20px;
+}
+
+#weathericon {
+  background-color: rgb(214, 226, 43);
+  height: 200px;
+  width: 200px;
+  margin-top: 50px;
+  border-radius: 15px;
+
+
+}
+
+.info {
+  background-color: rgb(255, 255, 255);
+  margin: 20px;
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 15px;
+  border-color: rgb(151, 163, 173);
+}
+
+.contenedor {
+  display: flex;
+  background-color: rgb(173, 216, 226);
+  justify-content: center;
+
+}
+
+#imagen {
+  margin-top: 100px;
+}
+
+.txt {
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+  border-color: #def;
+}
